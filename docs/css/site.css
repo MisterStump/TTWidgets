@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+/* Theme tokens */
+:root {
+  color-scheme: dark;
+  --paper: #111713;
+  --ink: #edf1e9;
+  --muted: #a8b3a8;
+  --border: #4b5c4f;
+  --green: #537b5d;
+  --green-hover: #638a68;
+  --green-deep: #1a2820;
+  --lime: #d8ef76;
+  --lime-hover: #e6f7a1;
+  --coral: #f08b70;
+  --sidebar-text: #dce6d9;
+  --sidebar-width: 220px;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', 'Trebuchet MS', sans-serif;
+}
+
+/* Base page */
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image: linear-gradient(90deg, rgba(216, 239, 118, 0.025) 1px, transparent 1px), linear-gradient(rgba(216, 239, 118, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Sidebar navigation */
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 10;
+  width: var(--sidebar-width);
+  height: 100vh;
+  padding: 68px 18px 20px;
+  background: var(--green-deep);
+  transition: transform 180ms ease;
+}
+
+.site-nav { display: grid; gap: 4px; }
+
+.site-nav a {
+  display: block;
+  padding: 9px 10px;
+  color: var(--sidebar-text);
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  background: rgba(216, 239, 118, 0.12);
+  color: var(--lime);
+}
+
+/* Main content */
+.page-content {
+  min-height: 100vh;
+  margin-left: var(--sidebar-width);
+  padding: 72px 32px 32px;
+  transition: margin-left 180ms ease;
+}
+
+.page-content h1 {
+  margin: 0 0 24px;
+  color: var(--ink);
+  font: 600 48px/1.08 var(--serif);
+}
+
+#demo-button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--border);
+  background: var(--green);
+  color: var(--ink);
+  font: 600 14px var(--sans);
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+#demo-button:hover { background: var(--green-hover); transform: translateY(-1px); }
+#demo-output { margin-top: 17px; color: var(--muted); font-size: 14px; }
+
+/* Fixed sidebar controls */
+.sidebar-toggle {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 20;
+  display: grid;
+  width: 42px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: var(--lime);
+  color: var(--green-deep);
+  font: 500 30px/1 var(--sans);
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.sidebar-toggle::before { content: "‹"; }
+.sidebar-toggle[aria-expanded="false"]::before { content: "›"; }
+.sidebar-toggle:hover { background: var(--lime-hover); transform: translateY(-1px); }
+
+.sidebar-mark {
+  position: fixed;
+  top: 14px;
+  left: calc(var(--sidebar-width) - 18px);
+  z-index: 20;
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  transform: translateX(-100%);
+  color: rgba(220, 230, 217, 0.38);
+  font: 600 25px/1.08 var(--serif);
+  pointer-events: none;
+  user-select: none;
+}
+
+.sidebar-toggle:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+
+.sidebar-collapsed .sidebar { transform: translateX(-100%); }
+.sidebar-collapsed .sidebar-mark { display: none; }
+.sidebar-collapsed .page-content { margin-left: 0; padding-left: 72px; }
+
+/* Mobile sidebar is an overlay, so page content stays in place. */
+@media (max-width: 720px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar-open .sidebar { transform: translateX(0); }
+  .page-content { margin-left: 0; padding: 72px 22px 30px 72px; }
+  .page-content h1 { font-size: 40px; }
+}
+
+@media (max-width: 420px) {
+  .page-content { padding-right: 18px; }
+}
+
+/* Keep state changes quiet for motion-sensitive users. */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar, .page-content, .sidebar-toggle, #demo-button { transition-duration: 0.01ms; }
+}
