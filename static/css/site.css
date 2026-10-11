@@ -36,14 +36,17 @@ body {
 /* Sidebar navigation */
 .sidebar {
   position: fixed;
-  inset: 0 auto 0 0;
-  z-index: 10;
+  inset: 56px auto 0 0;
+  z-index: 15;
   width: var(--sidebar-width);
-  height: 100vh;
-  padding: 68px 18px 20px;
+  padding: 12px 18px 20px;
   background: var(--green-deep);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  transform: translateX(-100%);
   transition: transform 180ms ease;
 }
+
+.sidebar-open .sidebar { transform: translateX(0); }
 
 .site-nav { display: grid; gap: 4px; }
 
@@ -90,12 +93,26 @@ body {
 #demo-button:hover { background: var(--green-hover); transform: translateY(-1px); }
 #demo-output { margin-top: 17px; color: var(--muted); font-size: 14px; }
 
-/* Fixed sidebar controls */
-.sidebar-toggle {
+/* Header controls stay in place while the navigation slides below them. */
+.site-header {
   position: fixed;
-  top: 14px;
-  left: 14px;
+  inset: 0 auto auto 0;
   z-index: 20;
+  width: 100%;
+  height: 56px;
+  background: var(--green-deep);
+}
+
+.header-inner {
+  display: flex;
+  width: min(var(--sidebar-width), 100%);
+  height: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px 0 14px;
+}
+
+.sidebar-toggle {
   display: grid;
   width: 42px;
   aspect-ratio: 1;
@@ -113,15 +130,10 @@ body {
 .sidebar-toggle:hover { background: var(--lime-hover); transform: translateY(-1px); }
 
 .sidebar-mark {
-  position: fixed;
-  top: 14px;
-  left: calc(var(--sidebar-width) - 18px);
-  z-index: 20;
   display: flex;
   min-height: 42px;
   align-items: center;
-  transform: translateX(-100%);
-  color: rgba(220, 230, 217, 0.38);
+  color: rgba(220, 230, 217, 0.5);
   font: 600 25px/1.08 var(--serif);
   pointer-events: none;
   user-select: none;
@@ -134,24 +146,16 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
-.sidebar-collapsed .sidebar { transform: translateX(-100%); }
-.sidebar-collapsed .sidebar-mark { display: none; }
-.sidebar-collapsed .page-content { margin-left: 0; padding-left: 72px; }
+.sidebar-collapsed .page-content { margin-left: 0; }
 
 /* Mobile sidebar is an overlay, so page content stays in place. */
 @media (max-width: 720px) {
-  .sidebar {
-    transform: translateX(-100%);
-    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .sidebar-open .sidebar { transform: translateX(0); }
-  .page-content { margin-left: 0; padding: 72px 22px 30px 72px; }
+  .page-content { margin-left: 0; padding: 72px 22px 30px; }
   .page-content h1 { font-size: 40px; }
 }
 
 @media (max-width: 420px) {
-  .page-content { padding-right: 18px; }
+  .page-content { padding-right: 18px; padding-left: 18px; }
 }
 
 /* Keep state changes quiet for motion-sensitive users. */
